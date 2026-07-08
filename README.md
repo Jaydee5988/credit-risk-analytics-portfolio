@@ -36,6 +36,42 @@
 
 ---
 
+## Employer-facing additions (risk analyst work samples)
+
+Beyond the Python models, this repo includes three artefacts that mirror the
+day-to-day deliverables of a **Risk Analyst / Credit Risk Analyst / Model Risk
+Analyst**:
+
+| Artefact | What it is | Skills it proves |
+|----------|-----------|------------------|
+| **[`sql/`](sql)** | 9 polished PostgreSQL/ANSI query files + schema over a credit data mart | Vintage analysis, delinquency **roll rates**, cohort default rates, **charge-off/loss curves**, utilisation trends, **exposure concentration (HHI)**, IFRS 9 **stage migration**, **watchlist extraction**, **ECL aggregation** — with window functions, CTEs, `GROUPING SETS`/`ROLLUP` |
+| **[`docs/model_validation_report.md`](docs/model_validation_report.md)** | A full SR 11-7 / IFRS 9-style **PD model validation** | Conceptual soundness, discrimination, calibration/backtesting, **PSI**, sensitivity, challenger comparison, monitoring triggers, controls, findings log |
+| **[`reports/risk_committee_memo.md`](reports/risk_committee_memo.md)** | An **executive credit risk committee memo** | Portfolio summary, ECL allowance, scenario/stress losses, watchlist, top risks, recommended actions — business-ready |
+
+Each is written as a genuine work sample (findings, recommendations, monitoring
+plans) rather than academic fluff, and every number ties back to the pipeline
+output in `reports/model_summary.md`.
+
+### Copy-ready resume bullets
+
+- Built an end-to-end **credit-risk analytics toolkit** (PD, LGD, ECL, stress
+  testing, early warning) in Python with a one-command reproducible pipeline;
+  PD model **ROC-AUC 0.94** with isotonic calibration and monotonic risk bands.
+- Implemented an **IFRS 9 / CECL ECL engine** (PD × LGD × EAD, 3-stage staging,
+  probability-weighted macro scenarios) producing a **$211m allowance at 12.45%
+  coverage** with stage/scenario reconciliation.
+- Ran **macro stress tests** showing portfolio loss rising from **7.2% base to
+  18.3% severe**, plus single-factor sensitivities and **HHI concentration**
+  analysis by sector and region.
+- Authored a **model validation report** (discrimination, calibration/backtesting,
+  **PSI**, sensitivity, challenger benchmarking, monitoring triggers, controls)
+  and an **executive risk committee memo** with recommended actions.
+- Wrote **production-style SQL** for vintage analysis, delinquency **roll rates**,
+  cohort default rates, **loss curves**, stage migration, and **watchlist
+  extraction** using window functions and CTEs on a star-schema data mart.
+
+---
+
 ## Selected results
 
 **PD risk bands are monotonic and calibrated** — predicted PD tracks the observed default rate closely across every band:
@@ -101,11 +137,17 @@ credit-risk-analytics-portfolio/
 │   ├── plotting.py            # figure helpers
 │   └── report.py              # assembles model_summary.md
 ├── tests/                     # pytest: ECL formula, scenarios, schema, smoke
+├── sql/                       # credit-analytics SQL (vintage, roll rates, ECL, ...)
+│   ├── schema.sql             # data-mart DDL + seed
+│   └── 01..09_*.sql           # one analysis per file + README
 ├── reports/
 │   ├── figures/               # generated PNG charts (committed)
-│   └── model_summary.md       # generated written report (committed)
+│   ├── model_summary.md       # generated written report (committed)
+│   └── risk_committee_memo.md # executive risk committee memo (work sample)
 ├── data/processed/            # generated tables/metrics (gitignored)
-├── docs/model_cards.md        # per-model assumptions, inputs, limitations
+├── docs/
+│   ├── model_cards.md         # per-model assumptions, inputs, limitations
+│   └── model_validation_report.md  # SR 11-7 / IFRS 9-style PD validation
 ├── requirements.txt · pyproject.toml · LICENSE
 ```
 
@@ -121,7 +163,7 @@ credit-risk-analytics-portfolio/
 - Synthetic data means metrics reflect a *designed* signal, not real-world noise; on real data expect lower AUC and messier calibration.
 - Lifetime PD uses a simplified constant-hazard transform rather than a full PD term-structure / vintage curve.
 - Macro scenarios are illustrative planning assumptions, not econometric forecasts tied to a specific macro model.
-- **Next:** swap in a public dataset (e.g., Fannie Mae / Freddie Mac loan performance or LendingClub) behind the same interface; add a PD term-structure; add SHAP and a monitoring dashboard; add model-governance artefacts (PSI/population stability, backtesting).
+- **Next:** swap in a public dataset (e.g., Fannie Mae / Freddie Mac loan performance or LendingClub) behind the same interface; add a PD term-structure; add SHAP and a monitoring dashboard. *(Model-governance artefacts — validation report with PSI/backtesting, and SQL for vintage/roll-rate/loss-curve analysis — are now included; see [Employer-facing additions](#employer-facing-additions-risk-analyst-work-samples).)*
 
 ## Author
 
